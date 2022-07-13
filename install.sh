@@ -4,22 +4,19 @@ THIS_DIR=$(cd $(dirname $0); pwd)
 
 cd $HOME
 
-for file in .zshrc .tmux.conf .vimrc
+for file in .zshrc .tmux.conf
 do
     [ ! -e $file ] && ln -sf dotfiles/$file .
 done
 
+# tmux
+tmux source ~/.tmux.conf
+
 # setting for fzf
 ln -sf $THIS_DIR/.fzf.zsh $HOME/.fzf.zsh
 
-# setting for git
-ln -sf $THIS_DIR/git/.gitconfig $HOME/.gitconfig
-
-
-# zinit install
-sh -c "$(curl -fsSL https://git.io/zinit-install)"
-source ~/.zshrc
-zinit self-update
+# zsh-autosuggestions install
+git clone https://github.com/zsh-users/zsh-autosuggestions ~/.zsh/zsh-autosuggestions
 
 if [ $(uname) = Darwin ]; then 
     # mac
@@ -60,15 +57,8 @@ mkdir -p ~/.zsh/completion
 curl -L https://raw.githubusercontent.com/docker/compose/1.29.2/contrib/completion/zsh/_docker-compose \
      -o ~/.zsh/completion/_docker-compose
 
-# tmux
-tmux source ~/.tmux.conf
-
-cd $THIS_DIR
-source ~/.zshrc
-
-# install rbenv pyenv nodenv
+# install pyenv
 git clone git://github.com/yyuu/pyenv.git ~/.pyenv
-
 pyenv install 3.9.9
 
 # poetry install

@@ -1,3 +1,12 @@
+export PYENV_ROOT="$HOME/.pyenv"
+export PATH="$PYENV_ROOT/bin:$PATH"
+export PATH="$HOME/.poetry/bin:$PATH"
+export TERM=xterm-256color
+eval "$(pyenv init -)"
+eval "$(thefuck --alias)"
+eval "$(starship init zsh)"
+eval "$(zoxide init zsh)"
+
 if [[ $(command -v exa) ]]; then
     alias exa="exa -a --icons --git -h -g"
     alias ls=exa
@@ -20,20 +29,14 @@ fi
 if [[ $(command -v bat) ]]; then
     alias cat="bat"
 fi
-export PYENV_ROOT="$HOME/.pyenv"
-export PATH="$PYENV_ROOT/bin:$PATH"
-export PATH="$HOME/.poetry/bin:$PATH"
-eval "$(pyenv virtualenv-init -)"
-eval "$(thefuck --alias)"
-eval "$(starship init zsh)"
-eval "$(zoxide init zsh)"
-zinit load "zsh-users/zsh-autosuggestions"
-zinit load "zsh-users/zsh-completions"
 
 fpath=(~/.zsh/completion $fpath)
 autoload -Uz compinit && compinit -i
+
 # load settings for fzf
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+source ~/.zsh/zsh-autosuggestions/zsh-autosuggestions.zsh
 # 補完候補が複数ある時に、一覧表示
 setopt auto_list
 # 補完キー（Tab, Ctrl+I) を連打するだけで順に補完候補を自動で補完
@@ -83,7 +86,6 @@ setopt no_beep
 setopt no_hist_beep
 setopt no_list_beep
 
-
 # 補完方法毎にグループ化する。
 zstyle ':completion:*' format '%B%F{blue}%d%f%b'
 zstyle ':completion:*' group-name ''
@@ -95,9 +97,7 @@ zstyle ':completion:*' list-colors "${(s.:.)LS_COLORS}"
 # 補完候補がなければより曖昧に候補を探す。
 # m:{a-z}={A-Z}: 小文字を大文字に変えたものでも補完する。
 # r:|[._-]=*: 「.」「_」「-」の前にワイルドカード「*」があるものとして補完する。
-#zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z} r:|[._-]=*'
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
-
 zstyle ':completion:*' keep-prefix
 zstyle ':completion:*' recent-dirs-insert both
 
