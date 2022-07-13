@@ -9,10 +9,6 @@ do
     [ ! -e $file ] && ln -sf dotfiles/$file .
 done
 
-# starship config
-mkdir -p $HOME/.config
-ln -sf $THIS_DIR/starship.toml $HOME/.config/starship.toml
-
 # setting for fzf
 ln -sf $THIS_DIR/.fzf.zsh $HOME/.fzf.zsh
 
@@ -64,12 +60,10 @@ mkdir -p ~/.zsh/completion
 curl -L https://raw.githubusercontent.com/docker/compose/1.29.2/contrib/completion/zsh/_docker-compose \
      -o ~/.zsh/completion/_docker-compose
 
-# install tmux plugin manager
-git clone https://github.com/tmux-plugins/tpm ~/.tmux/plugins/tpm
+# tmux
 tmux source ~/.tmux.conf
 
 cd $THIS_DIR
-
 source ~/.zshrc
 
 # install rbenv pyenv nodenv

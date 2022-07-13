@@ -1,0 +1,38 @@
+{
+  "python.languageServer": "Pylance",
+  "workbench.startupEditor": "newUntitledFile",
+  "terminal.integrated.inheritEnv": false,
+  "python.analysis.cacheFolderPath": "black",
+  "explorer.confirmDragAndDrop": false,
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "[python]": {
+    "editor.defaultFormatter": null,
+    "editor.formatOnPaste": false,
+    "editor.formatOnSaveMode": "file"
+  },
+  "python.formatting.provider": "black",
+  "editor.minimap.enabled": false,
+  "javascript.updateImportsOnFileMove.enabled": "always",
+  "python.showStartPage": false,
+  "editor.tabCompletion": "on",
+  "python.linting.flake8Enabled": true,
+  "workbench.editorAssociations": {
+    "*.ipynb": "jupyter-notebook"
+  },
+  "window.zoomLevel": 1,
+  "python.linting.pylintEnabled": false,
+  "editor.largeFileOptimizations": false,
+  "typescript.updateImportsOnFileMove.enabled": "always",
+  "http.proxy": "http://lv2east-proxy.nwdept:8080",
+  "http.proxyAuthorization": null,
+  "remote.SSH.remotePlatform": {
+    "reserved_gpu": "linux",
+    "reserved_gpu_blue": "linux",
+    "sns-analsys-stg": "linux",
+    "aimc-dev": "linux",
+    "kaggle": "linux",
+    "murata_multi_gpu": "linux"
+  },
+  "remote.SSH.localServerDownload": "always"
+}
