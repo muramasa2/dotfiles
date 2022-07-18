@@ -1,16 +1,34 @@
-# Setup fzf
-if [[ ! "$PATH" == */usr/local/opt/fzf/bin* ]]; then
-  export PATH="${PATH:+${PATH}:}/usr/local/opt/fzf/bin"
+if [ $(uname) = Darwin ]; then 
+    # Setup fzf
+    if [[ ! "$PATH" == */usr/local/opt/fzf/bin* ]]; then
+      export PATH="${PATH:+${PATH}:}/usr/local/opt/fzf/bin"
+    fi
+
+    # Auto-completion
+    [[ $- == *i* ]] && source "/usr/local/opt/fzf/shell/completion.zsh" 2> /dev/null
+
+    # Key bindings
+    key_binding_file="/usr/local/opt/fzf/shell/key-bindings.zsh"
+    if [ -e $key_binding_file ]; then
+        source $key_binding_file
+    fi
+
+elif [ $(uname) = Linux ]; then  # WSL
+    # Setup fzf
+    if [[ ! "$PATH" == */home/linuxbrew/.linuxbrew/opt/fzf/bin* ]]; then
+      export PATH="${PATH:+${PATH}:}/home/linuxbrew/.linuxbrew/opt/fzf/bin"
+    fi
+
+    # Auto-completion
+    [[ $- == *i* ]] && source "/home/linuxbrew/.linuxbrew/opt/fzf/shell/completion.zsh" 2> /dev/null
+
+    # Key bindings
+    key_binding_file="/home/linuxbrew/.linuxbrew/opt/fzf/shell/key-bindings.zsh"
+    if [ -e $key_binding_file ]; then
+        source $key_binding_file
+    fi
 fi
 
-# Auto-completion
-[[ $- == *i* ]] && source "/usr/local/opt/fzf/shell/completion.zsh" 2> /dev/null
-
-# Key bindings
-key_binding_file="/usr/local/opt/fzf/shell/key-bindings.zsh"
-if [ -e $key_binding_file ]; then
-    source $key_binding_file
-fi
 
 # -------------
 # Settings for fzf

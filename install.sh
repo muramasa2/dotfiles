@@ -2,21 +2,13 @@
 
 THIS_DIR=$(cd $(dirname $0); pwd)
 
-cd $HOME
-
 for file in .zshrc .tmux.conf
 do
-    [ ! -e $file ] && ln -sf dotfiles/$file .
+    [ ! -e "${HOME}/$file" ] && cp $file ~/
 done
 
-# tmux
-tmux source ~/.tmux.conf
 
-# setting for fzf
-ln -sf $THIS_DIR/.fzf.zsh $HOME/.fzf.zsh
-
-# zsh-autosuggestions install
-git clone https://github.com/zsh-users/zsh-autosuggestions ~/.zsh/zsh-autosuggestions
+cd $HOME
 
 if [ $(uname) = Darwin ]; then 
     # mac
@@ -35,22 +27,45 @@ if [ $(uname) = Darwin ]; then
 
     which brew >/dev/null 2>&1 && brew doctor
 
-    # brew本体のアップデート
-    brew update
-
-    # パッケージのアップデート
-    brew upgrade
-    brew upgrade --cask
-
-    # Brewfileの中身をインストール
-    brew bundle --file $THIS_DIR/Brewfile
-
-    brew cleanup
-
     # for vscode
     ln -sf $THIS_DIR/settings.json "${HOME}/Library/Application Support/Code/User/settings.json"
+elif [ $(uname) = Linux ]; then  # WSL
+    # update apt & install essential libraries
+    sudo apt update -y
+    sudo apt-get install -y build-essential curl file git zsh
+    
+    # change default shell into zsh
+    chsh -s $(which zsh)
+    
+    # install homebrew
+    /bin/zsh -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    test -d ~/.linuxbrew && eval $(~/.linuxbrew/bin/brew shellenv)
+    test -d /home/linuxbrew/.linuxbrew && eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)
+    echo "eval \$($(brew --prefix)/bin/brew shellenv)" >>~/.zprofile
+    source ~/.zprofile
 
 fi
+
+exec -l $(which zsh)
+
+# brew本体のアップデート
+brew update
+
+# パッケージのアップデート
+brew upgrade --cask
+
+# Brewfileの中身をインストール
+brew bundle --file $THIS_DIR/Brewfile
+brew cleanup
+
+# tmux
+tmux source ~/.tmux.conf
+
+# setting for fzf
+ln -sf $THIS_DIR/.fzf.zsh $HOME/.fzf.zsh
+
+# zsh-autosuggestions install
+git clone https://github.com/zsh-users/zsh-autosuggestions ~/.zsh/zsh-autosuggestions
 
 # for docker completion
 mkdir -p ~/.zsh/completion
@@ -59,7 +74,8 @@ curl -L https://raw.githubusercontent.com/docker/compose/1.29.2/contrib/completi
 
 # install pyenv
 git clone git://github.com/yyuu/pyenv.git ~/.pyenv
-pyenv install 3.9.9
+pyenv install 3.9.0
+pyenv shell 3.9.0
 
 # poetry install
-curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python -
+curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python3 -
