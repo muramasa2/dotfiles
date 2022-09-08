@@ -2,7 +2,7 @@
 
 THIS_DIR=$(cd $(dirname $0); pwd)
 
-for file in .zshrc .tmux.conf
+for file in .zshrc .tmux.conf .fzf.zsh
 do
     [ ! -e "${HOME}/$file" ] && cp $file ~/
 done
@@ -25,6 +25,8 @@ if [ $(uname) = Darwin ]; then
     echo "installing Homebrew ..."
     which brew >/dev/null 2>&1 || /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
 
+    echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> $HOME/.zprofile
+    eval "$(/opt/homebrew/bin/brew shellenv)"
     which brew >/dev/null 2>&1 && brew doctor
 
     # for vscode
@@ -73,9 +75,9 @@ curl -L https://raw.githubusercontent.com/docker/compose/1.29.2/contrib/completi
      -o ~/.zsh/completion/_docker-compose
 
 # install pyenv
-git clone git://github.com/yyuu/pyenv.git ~/.pyenv
-pyenv install 3.9.0
-pyenv shell 3.9.0
+git clone https://github.com/pyenv/pyenv.git ~/.pyenv
+pyenv install 3.9.1
+pyenv shell 3.9.1
 
 # poetry install
 curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python3 -

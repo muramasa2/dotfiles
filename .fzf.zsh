@@ -1,14 +1,14 @@
 if [ $(uname) = Darwin ]; then 
     # Setup fzf
-    if [[ ! "$PATH" == */usr/local/opt/fzf/bin* ]]; then
-      export PATH="${PATH:+${PATH}:}/usr/local/opt/fzf/bin"
+    if [[ ! "$PATH" == */opt/homebrew/opt/fzf/bin* ]]; then
+      export PATH="${PATH:+${PATH}:}/opt/homebrew/opt/fzf/bin"
     fi
 
     # Auto-completion
-    [[ $- == *i* ]] && source "/usr/local/opt/fzf/shell/completion.zsh" 2> /dev/null
+    [[ $- == *i* ]] && source "/opt/homebrew/opt/fzf/shell/completion.zsh" 2> /dev/null
 
     # Key bindings
-    key_binding_file="/usr/local/opt/fzf/shell/key-bindings.zsh"
+    key_binding_file="/opt/homebrew/opt/fzf/shell/key-bindings.zsh"
     if [ -e $key_binding_file ]; then
         source $key_binding_file
     fi
@@ -33,7 +33,7 @@ fi
 # -------------
 # Settings for fzf
 # -------------
-export FZF_DEFAULT_COMMAND='rg --files --hidden --follow --glob "!**/.git/*"'
+export FZF_DEFAULT_COMMAND='rg --files --hidden --follow --glob "!**/.git/*" 2> /dev/null'
 export FZF_DEFAULT_OPTS="
     --height 40% --reverse --border=sharp --margin=0,1
     --prompt=' ' --color=light

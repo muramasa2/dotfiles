@@ -24,7 +24,7 @@
   "python.linting.pylintEnabled": false,
   "editor.largeFileOptimizations": false,
   "typescript.updateImportsOnFileMove.enabled": "always",
-  "http.proxy": "http://lv2east-proxy.nwdept:8080",
+  // "http.proxy": "http://lv2east-proxy.nwdept:8080",
   "http.proxyAuthorization": null,
   "remote.SSH.remotePlatform": {
     "reserved_gpu": "linux",
