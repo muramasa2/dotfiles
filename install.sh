@@ -36,20 +36,16 @@ elif [ $(uname) = Linux ]; then  # WSL
     sudo apt update -y
     sudo apt-get install -y build-essential curl file git zsh
     
-    # change default shell into zsh
-    chsh -s $(which zsh)
-    
     # install homebrew
-    /bin/zsh -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
     test -d ~/.linuxbrew && eval $(~/.linuxbrew/bin/brew shellenv)
     test -d /home/linuxbrew/.linuxbrew && eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)
     echo "eval \$($(brew --prefix)/bin/brew shellenv)" >>~/.zprofile
-    source ~/.zprofile
-
+    echo "source $HOME/.zprofile" >> ~/.profile
+    echo "/bin/zsh" >> ~/.profile
 fi
 
-exec -l $(which zsh)
-
+source ~/.zprofile
 # brew本体のアップデート
 brew update
 
@@ -76,8 +72,9 @@ curl -L https://raw.githubusercontent.com/docker/compose/1.29.2/contrib/completi
 
 # install pyenv
 git clone https://github.com/pyenv/pyenv.git ~/.pyenv
-pyenv install 3.9.1
-pyenv shell 3.9.1
+/bin/zsh -c "pyenv install 3.9.1"
+/bin/zsh -c "pyenv shell 3.9.1"
 
 # poetry install
-curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python3 -
+/bin/zsh -c "curl -sSL https://install.python-poetry.org | python3 -"
+/bin/zsh -c "pyenv global 3.9.1"
