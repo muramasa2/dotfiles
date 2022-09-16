@@ -70,11 +70,16 @@ mkdir -p ~/.zsh/completion
 curl -L https://raw.githubusercontent.com/docker/compose/1.29.2/contrib/completion/zsh/_docker-compose \
      -o ~/.zsh/completion/_docker-compose
 
+source ~/.zshrc
+
 # install pyenv
 git clone https://github.com/pyenv/pyenv.git ~/.pyenv
-/bin/zsh -c "pyenv install 3.9.1"
-/bin/zsh -c "pyenv shell 3.9.1"
+
+sudo apt install zlib1g-dev libsqlite3-dev libbz2-dev libreadline-dev liblzma-dev
+source ~/.profile
+pyenv install 3.9.1
+pyenv shell 3.9.1
 
 # poetry install
-/bin/zsh -c "curl -sSL https://install.python-poetry.org | python3 -"
-/bin/zsh -c "pyenv global 3.9.1"
+curl -sSL https://install.python-poetry.org | python3 -
+pyenv global 3.9.1
