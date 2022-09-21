@@ -75,7 +75,7 @@ source ~/.zshrc
 # install pyenv
 git clone https://github.com/pyenv/pyenv.git ~/.pyenv
 
-sudo apt install zlib1g-dev libsqlite3-dev libbz2-dev libreadline-dev liblzma-dev
+sudo apt install libffi-dev zlib1g-dev libsqlite3-dev libbz2-dev libreadline-dev liblzma-dev
 source ~/.profile
 pyenv install 3.9.1
 pyenv shell 3.9.1
