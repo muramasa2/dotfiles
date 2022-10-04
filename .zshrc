@@ -2,6 +2,8 @@ export PYENV_ROOT="$HOME/.pyenv"
 export PATH="$PYENV_ROOT/bin:$PATH"
 export PATH="$HOME/.poetry/bin:$PATH"
 export TERM=xterm-256color
+export PATH="/usr/local/cuda/bin:$PATH"
+export LD_LIBRARY_PATH="/usr/local/cuda/lib64:$LD_LIBRARY_PATH"
 eval "$(pyenv init -)"
 eval "$(thefuck --alias)"
 eval "$(starship init zsh)"
