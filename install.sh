@@ -81,5 +81,9 @@ pyenv install 3.9.1
 pyenv shell 3.9.1
 
 # poetry install
+<<<<<<< HEAD
 curl -sSL https://install.python-poetry.org | python3 -
 pyenv global 3.9.1
+=======
+curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python3 - --uninstall
+>>>>>>> 803694a (add install)
