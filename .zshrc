@@ -4,11 +4,8 @@ export PATH="$HOME/.poetry/bin:$PATH"
 export TERM=xterm-256color
 export PATH="/usr/local/cuda/bin:$PATH"
 export LD_LIBRARY_PATH="/usr/local/cuda/lib64:$LD_LIBRARY_PATH"
-<<<<<<< HEAD
-=======
 export MECABRC='/home/linuxbrew/.linuxbrew/etc/mecabrc'
 export HISTFILE="$HOME/.bash_history"
->>>>>>> ca9a02a (fix history bug)
 eval "$(pyenv init -)"
 eval "$(pyenv virtualenv-init -)"
 eval "$(thefuck --alias)"
