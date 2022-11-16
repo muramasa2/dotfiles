@@ -61,9 +61,9 @@ sudo sh cuda_11.3.0_465.19.01_linux.run
 
 ## cuDNN ダウンロード
 
-[こちらのリンク](https://developer.nvidia.com/rdp/cudnn-download)から cuDNN をダウンロード  
-ex)
+[こちらのリンク](https://developer.nvidia.com/rdp/cudnn-download)から cuDNN をダウンロード
 
+ex)
 [cuDNN v8.5.0 (August 8th, 2022), for CUDA 11.x Local Installer for Ubuntu20.04 x86_64 (Deb)](https://developer.nvidia.com/compute/cudnn/secure/8.5.0/local_installers/11.7/cudnn-local-repo-ubuntu2004-8.5.0.96_1.0-1_amd64.deb)
 
 ```
