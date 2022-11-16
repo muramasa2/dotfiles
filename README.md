@@ -52,7 +52,12 @@ Hack Nerd Font を選択
 ## cuda のインストール
 
 https://developer.nvidia.com/cuda-toolkit-archive  
-[Linux] - [x86_64] - [Ubuntu] - [20.04] - [deb(local)] を選択した後指示に従う
+[Linux] - [x86_64] - [Ubuntu] - [20.04] - [runfile(local)] を選択した後指示に従う
+
+```
+wget https://developer.download.nvidia.com/compute/cuda/11.3.0/local_installers/cuda_11.3.0_465.19.01_linux.run
+sudo sh cuda_11.3.0_465.19.01_linux.run
+```
 
 ## cuDNN ダウンロード
 
