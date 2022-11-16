@@ -4,7 +4,6 @@ export PATH="$HOME/.poetry/bin:$PATH"
 export TERM=xterm-256color
 export PATH="/usr/local/cuda/bin:$PATH"
 export LD_LIBRARY_PATH="/usr/local/cuda/lib64:$LD_LIBRARY_PATH"
-export MECABRC='/home/linuxbrew/.linuxbrew/etc/mecabrc'
 export HISTFILE="$HOME/.bash_history"
 eval "$(pyenv init -)"
 eval "$(pyenv virtualenv-init -)"

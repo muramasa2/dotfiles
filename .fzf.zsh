@@ -15,15 +15,15 @@ if [ $(uname) = Darwin ]; then
 
 elif [ $(uname) = Linux ]; then  # WSL
     # Setup fzf
-    if [[ ! "$PATH" == */home/linuxbrew/.linuxbrew/opt/fzf/bin* ]]; then
-      export PATH="${PATH:+${PATH}:}/home/linuxbrew/.linuxbrew/opt/fzf/bin"
+    if [[ ! "$PATH" == */home/*/.fzf/bin* ]]; then
+      export PATH="${PATH:+${PATH}:}/home/$USER/.fzf/bin"
     fi
 
     # Auto-completion
-    [[ $- == *i* ]] && source "/home/linuxbrew/.linuxbrew/opt/fzf/shell/completion.zsh" 2> /dev/null
+    [[ $- == *i* ]] && source "/home/$USER/.fzf/shell/completion.zsh" 2> /dev/null
 
     # Key bindings
-    key_binding_file="/home/linuxbrew/.linuxbrew/opt/fzf/shell/key-bindings.zsh"
+    key_binding_file="/home/$USER/.fzf/shell/key-bindings.zsh"
     if [ -e $key_binding_file ]; then
         source $key_binding_file
     fi

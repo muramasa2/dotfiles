@@ -31,30 +31,42 @@ if [ $(uname) = Darwin ]; then
 
     # for vscode
     ln -sf $THIS_DIR/settings.json "${HOME}/Library/Application Support/Code/User/settings.json"
+
+    source ~/.zprofile
+    # brew本体のアップデート
+    brew update
+
+    # パッケージのアップデート
+    brew upgrade --cask
+
+    # Brewfileの中身をインストール
+    brew bundle --file $THIS_DIR/Brewfile
+    brew cleanup
 elif [ $(uname) = Linux ]; then  # WSL
     # update apt & install essential libraries
     sudo apt update -y
-    sudo apt-get install -y build-essential curl file git zsh
+    sudo apt-get install -y file zsh unzip make build-essential libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev libncursesw5-dev xz-utils tk-dev libffi-dev liblzma-dev python-openssl git
     
-    # install homebrew
-    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-    test -d ~/.linuxbrew && eval $(~/.linuxbrew/bin/brew shellenv)
-    test -d /home/linuxbrew/.linuxbrew && eval $(/home/linuxbrew/.linuxbrew/bin/brew shellenv)
-    echo "eval \$($(brew --prefix)/bin/brew shellenv)" >>~/.zprofile
-    echo "source $HOME/.zprofile" >> ~/.profile
-    echo "/bin/zsh" >> ~/.profile
+    # install bat
+    wget https://github.com/sharkdp/bat/releases/download/v0.22.1/bat-musl_0.22.1_amd64.deb
+    sudo dpkg -i bat-musl_0.22.1_amd64.deb
+
+    # install exa
+    wget https://github.com/ogham/exa/releases/download/v0.10.0/exa-linux-x86_64-v0.10.0.zip
+    unzip exa-linux-x86_64-v0.10.0.zip -d exa
+    sudo mv exa/bin/exa /usr/bin/
+
+    # install starship
+    echo y | curl -sS https://starship.rs/install.sh | sh
+
+    # install zoxide
+    echo y | curl -sS https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | bash
+
+    # install fzf
+    git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
+    echo y | ~/.fzf/install
+    echo "exec zsh" >> ~/.profile
 fi
-
-source ~/.zprofile
-# brew本体のアップデート
-brew update
-
-# パッケージのアップデート
-brew upgrade --cask
-
-# Brewfileの中身をインストール
-brew bundle --file $THIS_DIR/Brewfile
-brew cleanup
 
 # tmux
 tmux source ~/.tmux.conf
@@ -70,20 +82,16 @@ mkdir -p ~/.zsh/completion
 curl -L https://raw.githubusercontent.com/docker/compose/1.29.2/contrib/completion/zsh/_docker-compose \
      -o ~/.zsh/completion/_docker-compose
 
-source ~/.zshrc
-
 # install pyenv
 git clone https://github.com/pyenv/pyenv.git ~/.pyenv
 
-sudo apt install libffi-dev zlib1g-dev libsqlite3-dev libbz2-dev libreadline-dev liblzma-dev
 source ~/.profile
 pyenv install 3.9.1
+pyenv global 3.9.1
 pyenv shell 3.9.1
 
+# install thefuck
+pip3 install thefuck --user
+
 # poetry install
-<<<<<<< HEAD
 curl -sSL https://install.python-poetry.org | python3 -
-pyenv global 3.9.1
-=======
-curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python3 - --uninstall
->>>>>>> 803694a (add install)
