@@ -1,5 +1,3 @@
-# dotfiles
-
 # Mac での環境構築
 
 ## Xcode のインストール
