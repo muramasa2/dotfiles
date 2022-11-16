@@ -95,3 +95,7 @@ pip3 install thefuck --user
 
 # poetry install
 curl -sSL https://install.python-poetry.org | python3 -
+
+# git config
+git config --global user.email "masasoundmusic@gmail.com"
+git config --global user.name "muramasa2"
