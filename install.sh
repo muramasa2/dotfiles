@@ -45,7 +45,9 @@ if [ $(uname) = Darwin ]; then
 elif [ $(uname) = Linux ]; then  # WSL
     # update apt & install essential libraries
     sudo apt update -y
-    sudo apt-get install -y file zsh unzip make build-essential libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev libncursesw5-dev xz-utils tk-dev libffi-dev liblzma-dev python-openssl git
+    sudo apt-get install -y file zsh unzip make build-essential libssl-dev zlib1g-dev libbz2-dev \
+    libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev libncursesw5-dev xz-utils tk-dev \
+    libffi-dev liblzma-dev python-openssl git libsndfile1-dev
     
     # install bat
     wget https://github.com/sharkdp/bat/releases/download/v0.22.1/bat-musl_0.22.1_amd64.deb
@@ -65,6 +67,12 @@ elif [ $(uname) = Linux ]; then  # WSL
     # install fzf
     git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
     echo y | ~/.fzf/install
+
+    # install ripgrep
+    RIPGREP_VERSION=$(curl -s "https://api.github.com/repos/BurntSushi/ripgrep/releases/latest" | grep -Po '"tag_name": "\K[0-9.]+')
+    curl -Lo ripgrep.deb "https://github.com/BurntSushi/ripgrep/releases/latest/download/ripgrep_${RIPGREP_VERSION}_amd64.deb"
+    sudo apt install -y ./ripgrep.deb
+    
     echo "exec zsh" >> ~/.profile
 fi
 
