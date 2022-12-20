@@ -4,7 +4,7 @@ THIS_DIR=$(cd $(dirname $0); pwd)
 
 for file in .zshrc .tmux.conf .fzf.zsh
 do
-    [ ! -e "${HOME}/$file" ] && cp $file ~/
+    [ ! -e "${HOME}/$file" ] && ln -s $file ~/$file
 done
 
 
@@ -45,9 +45,9 @@ if [ $(uname) = Darwin ]; then
 elif [ $(uname) = Linux ]; then  # WSL
     # update apt & install essential libraries
     sudo apt update -y
-    sudo apt-get install -y file zsh unzip make build-essential libssl-dev zlib1g-dev libbz2-dev \
+    sudo apt install -y file zsh unzip make build-essential libssl-dev zlib1g-dev libbz2-dev \
     libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev libncursesw5-dev xz-utils tk-dev \
-    libffi-dev liblzma-dev python-openssl git libsndfile1-dev
+    libffi-dev liblzma-dev python-openssl git libsndfile1-dev vim
     
     # install bat
     wget https://github.com/sharkdp/bat/releases/download/v0.22.1/bat-musl_0.22.1_amd64.deb
@@ -92,6 +92,9 @@ curl -L https://raw.githubusercontent.com/docker/compose/1.29.2/contrib/completi
 
 # install pyenv
 git clone https://github.com/pyenv/pyenv.git ~/.pyenv
+export PYENV_ROOT="$HOME/.pyenv"
+export PATH="$PYENV_ROOT/bin:$PATH"
+git clone https://github.com/pyenv/pyenv-virtualenv.git $(pyenv root)/plugins/pyenv-virtualenv
 
 source ~/.profile
 pyenv install 3.9.1
