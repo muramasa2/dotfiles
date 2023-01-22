@@ -4,7 +4,7 @@ THIS_DIR=$(cd $(dirname $0); pwd)
 
 for file in .zshrc .tmux.conf .fzf.zsh
 do
-    [ ! -e "${HOME}/$file" ] && ln -s $file ~/$file
+    [ ! -e "${HOME}/$file" ] && ln -s $THIS_DIR/$file ~/$file
 done
 
 
