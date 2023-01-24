@@ -9,7 +9,6 @@ export HISTFILE="$HOME/.bash_history"
 export STARSHIP_CONFIG=~/.config/starship.toml
 eval "$(pyenv init -)"
 eval "$(pyenv virtualenv-init -)"
-eval "$(thefuck --alias)"
 eval "$(starship init zsh)"
 eval "$(zoxide init zsh)"
 

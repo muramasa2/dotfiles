@@ -47,7 +47,7 @@ elif [ $(uname) = Linux ]; then  # WSL
     sudo apt update -y
     sudo apt install -y file zsh unzip make build-essential libssl-dev zlib1g-dev libbz2-dev \
     libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev libncursesw5-dev xz-utils tk-dev \
-    libffi-dev liblzma-dev python-openssl git libsndfile1-dev vim
+    libffi-dev liblzma-dev git libsndfile1-dev vim
     
     # install bat
     wget https://github.com/sharkdp/bat/releases/download/v0.22.1/bat-musl_0.22.1_amd64.deb
@@ -60,6 +60,8 @@ elif [ $(uname) = Linux ]; then  # WSL
 
     # install starship
     echo y | curl -sS https://starship.rs/install.sh | sh
+    mkdir $HOME.config
+    ln -s $THIS_DIR/starship.toml $HOME/.config/starship.toml
 
     # install zoxide
     echo y | curl -sS https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | bash
@@ -103,6 +105,7 @@ pyenv shell 3.9.1
 
 # install thefuck
 pip3 install thefuck --user
+echo "eval "$(thefuck --alias)""  >> ~/.zshrc
 
 # poetry install
 curl -sSL https://install.python-poetry.org | python3 -

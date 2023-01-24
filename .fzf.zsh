@@ -1,17 +1,16 @@
 # Setup fzf
-if [[ ! "$PATH" == */root/.fzf/bin* ]]; then
-  export PATH="${PATH:+${PATH}:}/root/.fzf/bin"
+# ---------
+if [[ ! "$PATH" == */home/jovyan/.fzf/bin* ]]; then
+  PATH="${PATH:+${PATH}:}/home/jovyan/.fzf/bin"
 fi
 
 # Auto-completion
-[[ $- == *i* ]] && source "/root/.fzf/shell/completion.zsh" 2> /dev/null
+# ---------------
+[[ $- == *i* ]] && source "/home/jovyan/.fzf/shell/completion.zsh" 2> /dev/null
 
 # Key bindings
-key_binding_file="/root/.fzf/shell/key-bindings.zsh"
-if [ -e $key_binding_file ]; then
-    source $key_binding_file
-fi
-
+# ------------
+source "/home/jovyan/.fzf/shell/key-bindings.zsh"
 
 # -------------
 # Settings for fzf
