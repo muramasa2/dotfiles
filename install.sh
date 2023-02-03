@@ -2,6 +2,9 @@
 
 THIS_DIR=$(cd $(dirname $0); pwd)
 
+mkdir ~/.config
+ln -s $THIS_DIR/starship.toml ~/.config/starship.toml
+
 for file in .zshrc .tmux.conf .fzf.zsh
 do
     [ ! -e "${HOME}/$file" ] && ln -s $THIS_DIR/$file ~/$file
