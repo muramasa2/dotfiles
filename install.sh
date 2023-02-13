@@ -50,7 +50,7 @@ elif [ $(uname) = Linux ]; then  # WSL
     sudo apt update -y
     sudo apt install -y file zsh unzip make build-essential libssl-dev zlib1g-dev libbz2-dev \
     libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev libncursesw5-dev xz-utils tk-dev \
-    libffi-dev liblzma-dev git libsndfile1-dev vim
+    libffi-dev liblzma-dev git libsndfile1-dev vim tmux liblapack-dev ffmpeg
     
     # install bat
     wget https://github.com/sharkdp/bat/releases/download/v0.22.1/bat-musl_0.22.1_amd64.deb
