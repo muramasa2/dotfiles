@@ -77,8 +77,7 @@ elif [ $(uname) = Linux ]; then  # WSL
     RIPGREP_VERSION=$(curl -s "https://api.github.com/repos/BurntSushi/ripgrep/releases/latest" | grep -Po '"tag_name": "\K[0-9.]+')
     curl -Lo ripgrep.deb "https://github.com/BurntSushi/ripgrep/releases/latest/download/ripgrep_${RIPGREP_VERSION}_amd64.deb"
     sudo apt install -y ./ripgrep.deb
-    
-    echo "exec zsh" >> ~/.profile
+
 fi
 
 # tmux
@@ -97,9 +96,10 @@ curl -L https://raw.githubusercontent.com/docker/compose/1.29.2/contrib/completi
 
 # install pyenv
 git clone https://github.com/pyenv/pyenv.git ~/.pyenv
-export PYENV_ROOT="$HOME/.pyenv"
-export PATH="$PYENV_ROOT/bin:$PATH"
 git clone https://github.com/pyenv/pyenv-virtualenv.git $(pyenv root)/plugins/pyenv-virtualenv
+
+echo "export PYENV_ROOT="$HOME/.pyenv"" >> ~/.profile
+echo "export PATH="$PYENV_ROOT/bin:$PATH"" >> ~/.profile
 
 source ~/.profile
 pyenv install 3.9.1
@@ -116,3 +116,4 @@ curl -sSL https://install.python-poetry.org | python3 -
 # git config
 git config --global user.email "masasoundmusic@gmail.com"
 git config --global user.name "muramasa2"
+echo "exec zsh" >> ~/.profile
