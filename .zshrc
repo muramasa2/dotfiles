@@ -130,4 +130,4 @@ zshaddhistory() {
     local line="${1%%$'\n'}"
     [[ ! "$line" =~ "^(cd|z|jj?|lazygit|la|ll|ls|exa)($| )" ]]
 }
-cd /data
+cd /data/work

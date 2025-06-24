@@ -1,16 +1,16 @@
 # Setup fzf
 # ---------
-if [[ ! "$PATH" == */home/jovyan/.fzf/bin* ]]; then
-  PATH="${PATH:+${PATH}:}/home/jovyan/.fzf/bin"
+if [[ ! "$PATH" == *$HOME/.fzf/bin* ]]; then
+  PATH="${PATH:+${PATH}:}$HOME/.fzf/bin"
 fi
 
 # Auto-completion
 # ---------------
-[[ $- == *i* ]] && source "/home/jovyan/.fzf/shell/completion.zsh" 2> /dev/null
+[[ $- == *i* ]] && source "$HOME/.fzf/shell/completion.zsh" 2> /dev/null
 
 # Key bindings
 # ------------
-source "/home/jovyan/.fzf/shell/key-bindings.zsh"
+source "$HOME/.fzf/shell/key-bindings.zsh"
 
 # -------------
 # Settings for fzf
@@ -110,59 +110,4 @@ fzf-z-search() {
   else
       return 1
   fi
-}
-
-# zle -N fzf-z-search
-# bindkey '^z' fzf-z-search
-zle -N zi
-bindkey '^z' zi
-
-# プロセスをkill
-fkill() {
-  local pid
-  pid=$(ps -ef | sed 1d | fzf -m | awk '{print $2}')
-
-  if [ "x$pid" != "x" ]
-  then
-    echo $pid | xargs kill -${1:-9}
-  fi
-}
-
-# fzfでdockerコンテナに入る
-# ref: https://momozo.tech/2021/03/10/fzf%E3%81%A7zsh%E3%82%BF%E3%83%BC%E3%83%9F%E3%83%8A%E3%83%AB%E4%BD%9C%E6%A5%AD%E3%82%92%E5%8A%B9%E7%8E%87%E5%8C%96/
-fdcnte() {
-  local cid
-  cid=$(docker ps | sed 1d | fzf -q "$1" | awk '{print $1}')
-  [ -n "$cid" ] && docker exec -it "$cid" /bin/bash
-}
-
-# fzfでdockerのログを取得
-# ref: https://momozo.tech/2021/03/10/fzf%E3%81%A7zsh%E3%82%BF%E3%83%BC%E3%83%9F%E3%83%8A%E3%83%AB%E4%BD%9C%E6%A5%AD%E3%82%92%E5%8A%B9%E7%8E%87%E5%8C%96/
-fdl() {
-  local cid
-  cid=$(docker ps -a | sed 1d | fzf -q "$1" | awk '{print $1}')
-  [ -n "$cid" ] && docker logs -f --tail=200 "$cid"
-}
-
-# fzfでDockerコンテナ再起動
-# ref: https://momozo.tech/2021/03/10/fzf%E3%81%A7zsh%E3%82%BF%E3%83%BC%E3%83%9F%E3%83%8A%E3%83%AB%E4%BD%9C%E6%A5%AD%E3%82%92%E5%8A%B9%E7%8E%87%E5%8C%96/
-fdcntre() {
-  local cid
-  cid=$(docker ps -a | sed 1d | fzf -m -q "$1" | awk '{print $1}')
-  [ -n "$cid" ] && echo $cid | xargs docker container restart
-}
-
-# docker container rm
-# ref: https://momozo.tech/2021/03/10/fzf%E3%81%A7zsh%E3%82%BF%E3%83%BC%E3%83%9F%E3%83%8A%E3%83%AB%E4%BD%9C%E6%A5%AD%E3%82%92%E5%8A%B9%E7%8E%87%E5%8C%96/
-fdcntrm() {
-  local cid
-  cid=$(docker ps -a | sed 1d | fzf -m -q "$1" | awk '{print $1}')
-  [ -n "$cid" ] && echo $cid | xargs docker container rm -f
-}
-
-# docker image rm
-fdimgrm() {
-  local cid
-  cid=$(docker image ls -a | sed 1d | fzf -m -q "$1" | awk '{print $1}')
-  [ -n "$cid" ] && echo $cid | xargs docker image rm -f
 }
