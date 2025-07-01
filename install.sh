@@ -153,14 +153,6 @@ if ! pyenv versions | grep -q "3.11.0"; then
 fi
 pyenv global 3.11.0
 
-# install thefuck if not already installed
-if ! command -v fuck &> /dev/null; then
-    pip3 install thefuck --user
-    if ! grep -q "thefuck --alias" ~/.zshrc; then
-        echo "eval \"$(thefuck --alias)\"" >> ~/.zshrc
-    fi
-fi
-
 # poetry install if not already installed
 if ! command -v poetry &> /dev/null; then
     curl -sSL https://install.python-poetry.org | python3 -
