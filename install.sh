@@ -108,20 +108,14 @@ elif [ $(uname) = Linux ]; then  # WSL
         rm -f ripgrep.deb
     fi
 
-    # install Node.js if not already installed
-    if ! command -v node &> /dev/null; then
-        if [ "$EUID" -eq 0 ]; then
-            curl -fsSL https://deb.nodesource.com/setup_lts.x | bash -
-        else
-            curl -fsSL https://deb.nodesource.com/setup_lts.x | sudo bash -
-        fi
-        $APT_CMD update -y
-        $APT_CMD install -y nodejs
-    fi
-
-    # install Claude Code if not already installed
-    if ! command -v claude &> /dev/null; then
-        npm install -g @anthropic-ai/claude-code
+    # install uv if not already installed
+    if ! command -v uv &> /dev/null; then
+        echo "Installing uv..."
+        curl -LsSf https://astral.sh/uv/install.sh | sh
+        # Add uv to PATH for current session
+        export PATH="$HOME/.local/bin:$PATH"
+    else
+        echo "uv is already installed"
     fi
 fi
 
@@ -169,16 +163,26 @@ if ! pyenv versions | grep -q "3.11.0"; then
 fi
 pyenv global 3.11.0
 
-# uv install if not already installed
-if ! command -v uv &> /dev/null; then
-    curl -LsSf https://astral.sh/uv/install.sh | sh
+# poetry install if not already installed
+if ! command -v poetry &> /dev/null; then
+    curl -sSL https://install.python-poetry.org | python3 -
 fi
 
 # git config
 git config --global user.email "masasoundmusic@gmail.com"
 git config --global user.name "muramasa2"
 
-# Add exec zsh to ~/.profile only if not already present
-if ! grep -q "exec zsh" ~/.profile 2>/dev/null; then
-    echo "exec zsh" >> ~/.profile
+# Add conditional exec zsh to .profile if not already present
+if ! grep -q "exec zsh" ~/.profile; then
+    echo "" >> ~/.profile
+    echo "# Only exec zsh if:" >> ~/.profile
+    echo "# 1. We're in an interactive shell (PS1 is set)" >> ~/.profile
+    echo "# 2. We're not already in zsh (ZSH_VERSION is not set)" >> ~/.profile
+    echo "# 3. zsh is available" >> ~/.profile
+    echo 'if [ -n "$PS1" ] && [ -z "$ZSH_VERSION" ] && command -v zsh >/dev/null 2>&1; then' >> ~/.profile
+    echo "    exec zsh" >> ~/.profile
+    echo "fi" >> ~/.profile
+    echo "Added conditional exec zsh to ~/.profile"
+else
+    echo "exec zsh already present in ~/.profile, skipping"
 fi
