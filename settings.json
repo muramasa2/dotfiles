@@ -34,5 +34,11 @@
     "kaggle": "linux",
     "murata_multi_gpu": "linux"
   },
-  "remote.SSH.localServerDownload": "always"
+  "remote.SSH.localServerDownload": "always",
+  "vs-kubernetes": {
+    "vscode-kubernetes.helm-path-mac": "/Users/s19487/.vs-kubernetes/tools/helm/darwin-arm64/helm",
+    "vscode-kubernetes.minikube-path-mac": "/Users/s19487/.vs-kubernetes/tools/minikube/darwin-arm64/minikube",
+    "vs-kubernetes.ignore-recommendations": true
+  },
+  "redhat.telemetry.enabled": true
 }
