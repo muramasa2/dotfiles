@@ -178,4 +178,7 @@ fi
 git config --global user.email "masasoundmusic@gmail.com"
 git config --global user.name "muramasa2"
 
-echo "exec zsh" >> ~/.profile
+# Add exec zsh to ~/.profile only if not already present
+if ! grep -q "exec zsh" ~/.profile 2>/dev/null; then
+    echo "exec zsh" >> ~/.profile
+fi

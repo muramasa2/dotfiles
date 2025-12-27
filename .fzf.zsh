@@ -1,14 +1,26 @@
 # Setup fzf
 # ---------
-# Homebrew fzf integration
-if [[ -f /opt/homebrew/opt/fzf/shell/completion.zsh ]]; then
-  source /opt/homebrew/opt/fzf/shell/completion.zsh
-fi
+if [[ $(uname) == "Darwin" ]]; then
+  # Mac (Homebrew)
+  if [[ -f /opt/homebrew/opt/fzf/shell/completion.zsh ]]; then
+    source /opt/homebrew/opt/fzf/shell/completion.zsh
+  fi
 
-# Key bindings
-# ------------
-if [[ -f /opt/homebrew/opt/fzf/shell/key-bindings.zsh ]]; then
-  source /opt/homebrew/opt/fzf/shell/key-bindings.zsh
+  # Key bindings
+  if [[ -f /opt/homebrew/opt/fzf/shell/key-bindings.zsh ]]; then
+    source /opt/homebrew/opt/fzf/shell/key-bindings.zsh
+  fi
+else
+  # Linux
+  if [[ ! "$PATH" == *$HOME/.fzf/bin* ]]; then
+    PATH="${PATH:+${PATH}:}$HOME/.fzf/bin"
+  fi
+
+  # Auto-completion
+  [[ $- == *i* ]] && source "$HOME/.fzf/shell/completion.zsh" 2> /dev/null
+
+  # Key bindings
+  source "$HOME/.fzf/shell/key-bindings.zsh"
 fi
 
 # -------------
