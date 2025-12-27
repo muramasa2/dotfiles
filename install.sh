@@ -107,6 +107,22 @@ elif [ $(uname) = Linux ]; then  # WSL
         $APT_CMD install -y ./ripgrep.deb
         rm -f ripgrep.deb
     fi
+
+    # install Node.js if not already installed
+    if ! command -v node &> /dev/null; then
+        if [ "$EUID" -eq 0 ]; then
+            curl -fsSL https://deb.nodesource.com/setup_lts.x | bash -
+        else
+            curl -fsSL https://deb.nodesource.com/setup_lts.x | sudo bash -
+        fi
+        $APT_CMD update -y
+        $APT_CMD install -y nodejs
+    fi
+
+    # install Claude Code if not already installed
+    if ! command -v claude &> /dev/null; then
+        npm install -g @anthropic-ai/claude-code
+    fi
 fi
 
 # tmux - only source if tmux is running
