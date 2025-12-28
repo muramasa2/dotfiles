@@ -1,4 +1,4 @@
-export PYENV_ROOT="$HOME/.pyenv"
+export PYENV_ROOT="/datamount/work/.pyenv"
 export PATH="$PYENV_ROOT/bin:$PATH"
 export PATH="$HOME/.local/bin:$PATH"
 export PATH="$HOME/.poetry/bin:$PATH"

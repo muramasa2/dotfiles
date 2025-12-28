@@ -138,24 +138,29 @@ curl -L https://raw.githubusercontent.com/docker/compose/1.29.2/contrib/completi
      -o ~/.zsh/completion/_docker-compose
 
 # install pyenv if not already installed
-if [ ! -d ~/.pyenv ]; then
-    git clone https://github.com/pyenv/pyenv.git ~/.pyenv
+PYENV_ROOT="/datamount/work/.pyenv"
+if [ ! -d "$PYENV_ROOT" ]; then
+    git clone https://github.com/pyenv/pyenv.git "$PYENV_ROOT"
 fi
 
 # install pyenv-virtualenv if not already installed
-if [ ! -d ~/.pyenv/plugins/pyenv-virtualenv ]; then
-    git clone https://github.com/pyenv/pyenv-virtualenv.git ~/.pyenv/plugins/pyenv-virtualenv
+if [ ! -d "$PYENV_ROOT/plugins/pyenv-virtualenv" ]; then
+    git clone https://github.com/pyenv/pyenv-virtualenv.git "$PYENV_ROOT/plugins/pyenv-virtualenv"
 fi
 
 # Add pyenv to PATH if not already there
 if ! grep -q "PYENV_ROOT" ~/.profile; then
-    echo "export PYENV_ROOT=\"$HOME/.pyenv\"" >> ~/.profile
-    echo "export PATH=\"$PYENV_ROOT/bin:$PATH\"" >> ~/.profile
+    echo "export PYENV_ROOT=\"/datamount/work/.pyenv\"" >> ~/.profile
+    echo "export PATH=\"\$PYENV_ROOT/bin:\$PATH\"" >> ~/.profile
+    echo 'eval "$(pyenv init -)"' >> ~/.profile
+    echo 'eval "$(pyenv virtualenv-init -)"' >> ~/.profile
 fi
 
 # Add pyenv to current PATH for this session
-export PYENV_ROOT="$HOME/.pyenv"
+export PYENV_ROOT="/datamount/work/.pyenv"
 export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init -)"
+eval "$(pyenv virtualenv-init -)"
 
 # Install Python if not already installed
 if ! pyenv versions | grep -q "3.11.0"; then
