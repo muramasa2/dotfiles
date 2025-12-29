@@ -117,6 +117,24 @@ elif [ $(uname) = Linux ]; then  # WSL
     else
         echo "uv is already installed"
     fi
+
+    # install Node.js and Claude Code if not already installed
+    if ! command -v node &> /dev/null; then
+        echo "Installing Node.js..."
+        curl -fsSL https://deb.nodesource.com/setup_lts.x | bash -
+        $APT_CMD update
+        $APT_CMD install -y nodejs
+    else
+        echo "Node.js is already installed"
+    fi
+
+    # install Claude Code if not already installed
+    if ! command -v claude &> /dev/null; then
+        echo "Installing Claude Code..."
+        npm install -g @anthropic-ai/claude-code
+    else
+        echo "Claude Code is already installed"
+    fi
 fi
 
 # tmux - only source if tmux is running
