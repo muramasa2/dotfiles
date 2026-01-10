@@ -135,6 +135,14 @@ elif [ $(uname) = Linux ]; then  # WSL
     else
         echo "Claude Code is already installed"
     fi
+
+    # setup Claude Code config (.claude directory)
+    if [ -d "$THIS_DIR/.claude" ]; then
+        echo "Setting up Claude Code config..."
+        rm -rf ~/.claude
+        ln -sf $THIS_DIR/.claude ~/.claude
+        echo "Created symlink: ~/.claude -> $THIS_DIR/.claude"
+    fi
 fi
 
 # tmux - only source if tmux is running and .tmux.conf exists
