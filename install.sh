@@ -137,8 +137,8 @@ elif [ $(uname) = Linux ]; then  # WSL
     fi
 fi
 
-# tmux - only source if tmux is running
-if tmux list-sessions &> /dev/null; then
+# tmux - only source if tmux is running and .tmux.conf exists
+if [ -f ~/.tmux.conf ] && tmux list-sessions &> /dev/null; then
     tmux source ~/.tmux.conf
 fi
 
@@ -156,7 +156,13 @@ curl -L https://raw.githubusercontent.com/docker/compose/1.29.2/contrib/completi
      -o ~/.zsh/completion/_docker-compose
 
 # install pyenv if not already installed
-PYENV_ROOT="/datamount/work/.pyenv"
+# Set PYENV_ROOT based on OS
+if [ $(uname) = Darwin ]; then
+    PYENV_ROOT="$HOME/.pyenv"
+else
+    PYENV_ROOT="/datamount/work/.pyenv"
+fi
+
 if [ ! -d "$PYENV_ROOT" ]; then
     git clone https://github.com/pyenv/pyenv.git "$PYENV_ROOT"
 fi
@@ -168,14 +174,14 @@ fi
 
 # Add pyenv to PATH if not already there
 if ! grep -q "PYENV_ROOT" ~/.profile; then
-    echo "export PYENV_ROOT=\"/datamount/work/.pyenv\"" >> ~/.profile
+    echo "export PYENV_ROOT=\"$PYENV_ROOT\"" >> ~/.profile
     echo "export PATH=\"\$PYENV_ROOT/bin:\$PATH\"" >> ~/.profile
     echo 'eval "$(pyenv init -)"' >> ~/.profile
     echo 'eval "$(pyenv virtualenv-init -)"' >> ~/.profile
 fi
 
 # Add pyenv to current PATH for this session
-export PYENV_ROOT="/datamount/work/.pyenv"
+export PYENV_ROOT="$PYENV_ROOT"
 export PATH="$PYENV_ROOT/bin:$PATH"
 eval "$(pyenv init -)"
 eval "$(pyenv virtualenv-init -)"
@@ -188,7 +194,13 @@ pyenv global 3.11.0
 
 # poetry install if not already installed
 if ! command -v poetry &> /dev/null; then
-    curl -sSL https://install.python-poetry.org | python3 -
+    if [ $(uname) = Darwin ]; then
+        # On Mac, install poetry via brew to avoid SSL issues
+        brew install poetry
+    else
+        # On Linux, use the official installer
+        curl -sSL https://install.python-poetry.org | python3 -
+    fi
 fi
 
 # git config

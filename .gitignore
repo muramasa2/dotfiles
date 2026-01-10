@@ -1,3 +1,9 @@
 .DS_Store
 Brewfile.lock.json
+
+# Claude Code related
 .claude
+.claude-code/
+.claude_history
+claude-code.log
+.claude-code.log
