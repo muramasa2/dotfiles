@@ -118,12 +118,25 @@ elif [ $(uname) = Linux ]; then  # WSL
         echo "uv is already installed"
     fi
 
-    # install Node.js and Claude Code if not already installed
+    # install volta if not already installed
+    if ! command -v volta &> /dev/null; then
+        echo "Installing volta..."
+        curl https://get.volta.sh | bash
+        # Add volta to PATH for current session
+        export VOLTA_HOME="$HOME/.volta"
+        export PATH="$VOLTA_HOME/bin:$PATH"
+    else
+        echo "volta is already installed"
+    fi
+
+    # Ensure volta is in PATH
+    export VOLTA_HOME="$HOME/.volta"
+    export PATH="$VOLTA_HOME/bin:$PATH"
+
+    # install Node.js via volta if not already installed
     if ! command -v node &> /dev/null; then
-        echo "Installing Node.js..."
-        curl -fsSL https://deb.nodesource.com/setup_lts.x | bash -
-        $APT_CMD update
-        $APT_CMD install -y nodejs
+        echo "Installing Node.js via volta..."
+        volta install node
     else
         echo "Node.js is already installed"
     fi
@@ -132,6 +145,10 @@ elif [ $(uname) = Linux ]; then  # WSL
     if ! command -v claude &> /dev/null; then
         echo "Installing Claude Code..."
         npm install -g @anthropic-ai/claude-code
+        # Ensure proper permissions for .claude directory
+        mkdir -p ~/.claude/todos
+        chmod 755 ~/.claude
+        chmod 755 ~/.claude/todos
     else
         echo "Claude Code is already installed"
     fi
@@ -142,6 +159,9 @@ elif [ $(uname) = Linux ]; then  # WSL
         rm -rf ~/.claude
         ln -sf $THIS_DIR/.claude ~/.claude
         echo "Created symlink: ~/.claude -> $THIS_DIR/.claude"
+        # Ensure proper permissions after symlinking
+        chmod 755 $THIS_DIR/.claude
+        chmod 755 $THIS_DIR/.claude/todos 2>/dev/null || true
     fi
 fi
 
