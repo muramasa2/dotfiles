@@ -133,13 +133,9 @@ elif [ $(uname) = Linux ]; then  # WSL
     export VOLTA_HOME="$HOME/.volta"
     export PATH="$VOLTA_HOME/bin:$PATH"
 
-    # install Node.js via volta if not already installed
-    if ! command -v node &> /dev/null; then
-        echo "Installing Node.js via volta..."
-        volta install node
-    else
-        echo "Node.js is already installed"
-    fi
+    # install Node.js via volta (reinstall even if node already exists)
+    echo "Installing Node.js via volta..."
+    volta install node
 
     # install Claude Code if not already installed
     if ! command -v claude &> /dev/null; then
