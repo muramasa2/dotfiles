@@ -42,7 +42,6 @@ cd dotfiles
   - Mac: `$HOME/.pyenv`
   - Linux: `/datamount/work/.pyenv`
   - Python 3.11.0 をグローバルに設定
-- **poetry** - Python パッケージ管理（Mac では brew、Linux では公式インストーラー）
 - **Docker Compose** 用の zsh 補完
 - **zsh-autosuggestions** - コマンド候補表示
 - Git 設定（user.email と user.name）
@@ -59,16 +58,21 @@ cd dotfiles
 - **Brewfile** からのパッケージ一括インストール（bat, eza, ripgrep, starship, zoxide, tmux など）
 
 ### Linux (WSL) 固有の設定
-- **必須開発ライブラリ** のインストール（build-essential, libssl-dev, git, vim, tmux, ffmpeg など）
+- **必須開発ライブラリ** のインストール（build-essential, libssl-dev, git, vim, tmux, ffmpeg, espeak-ng, intel-mkl, fonts-noto-cjk など）
+- **Times New Roman フォント** のインストール（matplotlib 用）
 - **bat** - cat の代替（個別ダウンロード）
 - **exa** - ls の代替（個別ダウンロード）
 - **starship** - プロンプトカスタマイズ（starship.toml のシンボリックリンク作成）
 - **zoxide** - cd の高速代替
 - **fzf** - ファジーファインダー（Git からクローン）
 - **ripgrep** - grep の高速代替
+- **Volta** - Node.js バージョン管理
+- **Node.js** LTS 版（Volta 経由でインストール）
 - **uv** - 高速 Python パッケージインストーラー
-- **Node.js** のインストール（LTS 版）
 - **Claude Code** - AI アシスタント CLI
+- **Claude Code 設定** - `.claude` ディレクトリのシンボリックリンク作成
+- **OpenAI Codex** - AI アシスタント CLI
+- **Codex 設定** - `AGENTS.md` がないプロジェクトで `CLAUDE.md` を fallback として読む設定
 
 ## ターミナルのフォント選択
 
@@ -113,19 +117,22 @@ sudo apt install cudnn-local-repo-ubuntu2004-8.5.0.96
 source ~/.profile
 ```
 
-### poetry が見つからない（Linux）
-以下のパスを確認してください：
-
-```bash
-export PATH="$HOME/.local/bin:$PATH"
-```
-
 ### uv または claude が見つからない（Linux）
 以下のパスを確認してください：
 
 ```bash
 export PATH="$HOME/.local/bin:$PATH"
 ```
+
+### Codex で `CLAUDE.md` を使いたい
+この dotfiles では `~/.codex/config.toml` に以下を設定します。
+
+```toml
+project_doc_fallback_filenames = ["CLAUDE.md"]
+```
+
+これにより、プロジェクトに `AGENTS.md` がない場合でも Codex が `CLAUDE.md` を参照できます。
+ファイル参照は Codex 側でも `@path/to/file` 形式で使い分ける想定です。
 
 ### tmux 設定が反映されない
 tmux セッション内で以下を実行してください：

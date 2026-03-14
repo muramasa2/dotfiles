@@ -63,9 +63,21 @@ elif [ $(uname) = Linux ]; then  # WSL
     
     # update apt & install essential libraries
     $APT_CMD update -y
-    $APT_CMD install -y file zsh unzip make build-essential libssl-dev zlib1g-dev libbz2-dev \
+
+    # Pre-configure intel-mkl to avoid interactive prompts
+    # The actual debconf prompts come from libmkl-rt, not intel-mkl
+    echo "libmkl-rt libmkl-rt/use-as-default-blas-lapack boolean true" | sudo debconf-set-selections
+    echo "libmkl-rt libmkl-rt/exact-so-3-selections multiselect libblas.so.3, liblapack.so.3" | sudo debconf-set-selections
+
+    DEBIAN_FRONTEND=noninteractive $APT_CMD install -y file zsh unzip make build-essential libssl-dev zlib1g-dev libbz2-dev \
     libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev libncursesw5-dev xz-utils tk-dev \
-    libffi-dev liblzma-dev git libsndfile1-dev vim tmux liblapack-dev ffmpeg
+    libffi-dev liblzma-dev git libsndfile1-dev vim tmux liblapack-dev ffmpeg \
+    espeak-ng intel-mkl fonts-noto-cjk
+
+    # install Times New Roman fonts
+    echo "ttf-mscorefonts-installer msttcorefonts/accepted-mscorefonts-eula select true" | sudo debconf-set-selections
+    sudo DEBIAN_FRONTEND=noninteractive apt install -y ttf-mscorefonts-installer
+    rm -rf ~/.cache/matplotlib
     
     # install bat if not already installed
     if ! command -v bat &> /dev/null; then
@@ -108,6 +120,24 @@ elif [ $(uname) = Linux ]; then  # WSL
         rm -f ripgrep.deb
     fi
 
+    # install Volta (Node.js version manager) if not already installed
+    if ! command -v volta &> /dev/null; then
+        echo "Installing Volta..."
+        curl https://get.volta.sh | bash
+        export VOLTA_HOME="$HOME/.volta"
+        export PATH="$VOLTA_HOME/bin:$PATH"
+    else
+        echo "Volta is already installed"
+    fi
+
+    # install Node.js LTS via Volta if not already installed
+    if ! command -v node &> /dev/null; then
+        echo "Installing Node.js LTS via Volta..."
+        volta install node
+    else
+        echo "Node.js is already installed: $(node --version)"
+    fi
+
     # install uv if not already installed
     if ! command -v uv &> /dev/null; then
         echo "Installing uv..."
@@ -118,35 +148,20 @@ elif [ $(uname) = Linux ]; then  # WSL
         echo "uv is already installed"
     fi
 
-    # install volta if not already installed
-    if ! command -v volta &> /dev/null; then
-        echo "Installing volta..."
-        curl https://get.volta.sh | bash
-        # Add volta to PATH for current session
-        export VOLTA_HOME="$HOME/.volta"
-        export PATH="$VOLTA_HOME/bin:$PATH"
-    else
-        echo "volta is already installed"
-    fi
-
-    # Ensure volta is in PATH
-    export VOLTA_HOME="$HOME/.volta"
-    export PATH="$VOLTA_HOME/bin:$PATH"
-
-    # install Node.js via volta (reinstall even if node already exists)
-    echo "Installing Node.js via volta..."
-    volta install node
-
-    # install Claude Code if not already installed
+    # install Claude Code (native) if not already installed
     if ! command -v claude &> /dev/null; then
         echo "Installing Claude Code..."
-        npm install -g @anthropic-ai/claude-code
-        # Ensure proper permissions for .claude directory
-        mkdir -p ~/.claude/todos
-        chmod 755 ~/.claude
-        chmod 755 ~/.claude/todos
+        curl -fsSL https://claude.ai/install.sh | sh
     else
         echo "Claude Code is already installed"
+    fi
+
+    # install OpenAI Codex if not already installed
+    if ! command -v codex &> /dev/null; then
+        echo "Installing OpenAI Codex..."
+        npm i -g @openai/codex
+    else
+        echo "OpenAI Codex is already installed"
     fi
 
     # setup Claude Code config (.claude directory)
@@ -159,6 +174,14 @@ elif [ $(uname) = Linux ]; then  # WSL
         chmod 755 $THIS_DIR/.claude
         chmod 755 $THIS_DIR/.claude/todos 2>/dev/null || true
     fi
+fi
+
+# setup Codex config (.codex directory)
+if [ -f "$THIS_DIR/.codex/config.toml" ]; then
+    echo "Setting up Codex config..."
+    mkdir -p ~/.codex
+    ln -sf $THIS_DIR/.codex/config.toml ~/.codex/config.toml
+    echo "Created symlink: ~/.codex/config.toml -> $THIS_DIR/.codex/config.toml"
 fi
 
 # tmux - only source if tmux is running and .tmux.conf exists
@@ -215,17 +238,6 @@ if ! pyenv versions | grep -q "3.11.0"; then
     pyenv install 3.11.0
 fi
 pyenv global 3.11.0
-
-# poetry install if not already installed
-if ! command -v poetry &> /dev/null; then
-    if [ $(uname) = Darwin ]; then
-        # On Mac, install poetry via brew to avoid SSL issues
-        brew install poetry
-    else
-        # On Linux, use the official installer
-        curl -sSL https://install.python-poetry.org | python3 -
-    fi
-fi
 
 # git config
 git config --global user.email "masasoundmusic@gmail.com"

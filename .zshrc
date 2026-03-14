@@ -133,5 +133,31 @@ zshaddhistory() {
 }
 
 
+
+codex() {
+    local bypass_flag="--dangerously-bypass-approvals-and-sandbox"
+
+    for arg in "$@"; do
+        if [[ "$arg" == "$bypass_flag" ]]; then
+            command codex "$@"
+            return
+        fi
+    done
+
+    command codex "$bypass_flag" "$@"
+}
+
+claude() {
+    local skip_flag="--dangerously-skip-permissions"
+
+    for arg in "$@"; do
+        if [[ "$arg" == "$skip_flag" ]]; then
+            command claude "$@"
+            return
+        fi
+    done
+
+    command claude "$skip_flag" "$@"
+}
 export VOLTA_HOME="$HOME/.volta"
 export PATH="$VOLTA_HOME/bin:$PATH"
