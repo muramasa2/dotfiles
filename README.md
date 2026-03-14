@@ -66,8 +66,8 @@ cd dotfiles
 - **zoxide** - cd の高速代替
 - **fzf** - ファジーファインダー（Git からクローン）
 - **ripgrep** - grep の高速代替
-- **Volta** - Node.js バージョン管理
-- **Node.js** LTS 版（Volta 経由でインストール）
+- **Volta** - Node.js バージョン管理（既存の nvm がある場合は自動削除）
+- **Node.js 22**（Volta 経由でインストール、Codex が Node 22+ を要求）
 - **uv** - 高速 Python パッケージインストーラー
 - **Claude Code** - AI アシスタント CLI
 - **Claude Code 設定** - `.claude` ディレクトリのシンボリックリンク作成

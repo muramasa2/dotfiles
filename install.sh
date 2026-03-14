@@ -120,6 +120,21 @@ elif [ $(uname) = Linux ]; then  # WSL
         rm -f ripgrep.deb
     fi
 
+    # Remove nvm if present (we use Volta instead)
+    if [ -d "/usr/local/nvm" ] || [ -n "$NVM_DIR" ]; then
+        echo "Removing nvm in favor of Volta..."
+        # Remove nvm installation directories
+        rm -rf /usr/local/nvm "${NVM_DIR:-/dev/null}" "$HOME/.nvm" 2>/dev/null || true
+        # Remove nvm lines from shell configs
+        for rc in "$HOME/.bashrc" "$HOME/.profile" "$HOME/.bash_profile" "$HOME/.zshrc"; do
+            if [ -f "$rc" ]; then
+                sed -i '/NVM_DIR/d;/nvm.sh/d;/nvm\/bash_completion/d' "$rc"
+            fi
+        done
+        unset NVM_DIR
+        echo "nvm removed"
+    fi
+
     # install Volta (Node.js version manager) if not already installed
     if ! command -v volta &> /dev/null; then
         echo "Installing Volta..."
@@ -130,13 +145,9 @@ elif [ $(uname) = Linux ]; then  # WSL
         echo "Volta is already installed"
     fi
 
-    # install Node.js LTS via Volta if not already installed
-    if ! command -v node &> /dev/null; then
-        echo "Installing Node.js LTS via Volta..."
-        volta install node
-    else
-        echo "Node.js is already installed: $(node --version)"
-    fi
+    # install Node.js 22 via Volta (Codex requires Node 22+)
+    echo "Installing/updating Node.js 22 via Volta..."
+    volta install node@22
 
     # install uv if not already installed
     if ! command -v uv &> /dev/null; then
