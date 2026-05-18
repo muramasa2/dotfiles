@@ -254,6 +254,34 @@ pyenv global 3.11.0
 git config --global user.email "masasoundmusic@gmail.com"
 git config --global user.name "muramasa2"
 
+# NLTK resources required by ESPnet TTS g2p / text processing (averaged_perceptron_tagger_eng
+# etc). Missing these makes every submit script fail at its NLTK preflight. Download into
+# $HOME/nltk_data so k8s pods with HOME forced to /home/devuser (see submit scripts) find them.
+NLTK_TARGET="$HOME/nltk_data"
+mkdir -p "$NLTK_TARGET"
+# Use whichever python is on PATH; fall back to installing nltk if missing.
+NLTK_PY=$(command -v python3 || command -v python)
+if [ -n "$NLTK_PY" ]; then
+    if ! "$NLTK_PY" -c "import nltk" >/dev/null 2>&1; then
+        "$NLTK_PY" -m pip install --user --quiet nltk || true
+    fi
+    NLTK_DATA="$NLTK_TARGET" "$NLTK_PY" - <<'PYEOF' || true
+import nltk, os
+target = os.environ["NLTK_DATA"]
+for pkg in ("averaged_perceptron_tagger_eng",
+            "averaged_perceptron_tagger",
+            "cmudict",
+            "punkt",
+            "punkt_tab"):
+    try:
+        nltk.download(pkg, download_dir=target, quiet=True)
+    except Exception as e:
+        print(f"[nltk] skip {pkg}: {e}")
+PYEOF
+else
+    echo "[nltk] no python on PATH; skip NLTK resource bootstrap"
+fi
+
 # Add conditional exec zsh to .profile if not already present
 if ! grep -q "exec zsh" ~/.profile; then
     echo "" >> ~/.profile
