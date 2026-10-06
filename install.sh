@@ -263,7 +263,7 @@ mkdir -p "$NLTK_TARGET"
 NLTK_PY=$(command -v python3 || command -v python)
 if [ -n "$NLTK_PY" ]; then
     if ! "$NLTK_PY" -c "import nltk" >/dev/null 2>&1; then
-        "$NLTK_PY" -m pip install --user --quiet nltk || true
+        PIP_CONFIG_FILE=/dev/null "$NLTK_PY" -m pip install --user --quiet nltk || true
     fi
     NLTK_DATA="$NLTK_TARGET" "$NLTK_PY" - <<'PYEOF' || true
 import nltk, os
